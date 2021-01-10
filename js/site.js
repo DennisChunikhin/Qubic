@@ -1,4 +1,4 @@
-﻿var scene;
+var scene;
 var camera;
 var box;
 var renderer;
@@ -16,8 +16,9 @@ var board = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 0
 var won = false;
 
 window.addEventListener('load', setUp, false);
-window.addEventListener('mousemove', mouseMove);
-window.addEventListener('click', mouseClick);
+window.addEventListener('mousemove', mouseMove, false);
+window.addEventListener('click', mouseClick, false);
+window.addEventListener('touchend', touchEnd, false);
 
 window.addEventListener('resize', function() {
 	WIDTH = window.innerWidth;
@@ -26,6 +27,35 @@ window.addEventListener('resize', function() {
 	camera.aspect = WIDTH / HEIGHT;
 	camera.updateProjectionMatrix();
 });
+
+function mouseMove(event) {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+}
+
+function mouseClick() {
+	raycaster.setFromCamera(mouse, camera);
+	
+	let intersects = raycaster.intersectObjects(scene.children);
+	if (!won && intersects.length != 0 && intersects[0].object.name === "piece")
+		makeMove(intersects[0].object);
+
+	renderer.render(scene, camera);
+}
+
+function touchEnd(event) {
+	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	
+	raycaster.setFromCamera(mouse, camera);
+	
+	let intersects = raycaster.intersectObjects(scene.children);
+	if (!won && intersects.length != 0 && intersects[0].object.name === "piece")
+		makeMove(intersects[0].object);
+
+	renderer.render(scene, camera);
+}
+
 
 function setUp() {
 	makeScene();
@@ -112,21 +142,6 @@ function makeGrid(h) {
 
 var render = function () {
 	requestAnimationFrame(render);
-
-	renderer.render(scene, camera);
-}
-
-function mouseMove(event) {
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-}
-
-function mouseClick() {
-	raycaster.setFromCamera(mouse, camera);
-	
-	let intersects = raycaster.intersectObjects(scene.children);
-	if (!won && intersects.length != 0 && intersects[0].object.name === "piece")
-		makeMove(intersects[0].object);
 
 	renderer.render(scene, camera);
 }
