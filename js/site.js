@@ -17,13 +17,13 @@ var player = true;
 var board = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
 var won = false;
 
-window.addEventListener('load', setUp, false);
-window.addEventListener('mousemove', mouseMove, false);
-window.addEventListener('click', mouseClick, false);
-window.addEventListener('touchend', touchEnd, false);
+window.addEventListener('load', setUp);
+window.addEventListener('mousemove', mouseMove);
+window.addEventListener('click', mouseClick);
+window.addEventListener('touchend', touchEnd);
 
-window.addEventListener('touchstart', function(event) { movingMobile = false; }, false);
-window.addEventListener('touchmove', function(event) { movingMobile = true; }, false);
+window.addEventListener('touchstart', () => { movingMobile = false; });
+window.addEventListener('touchmove', () => { console.log("Move");movingMobile = true; }, true);
 
 window.addEventListener('resize', function() {
 	WIDTH = window.innerWidth;
