@@ -9,6 +9,8 @@ var mouse;
 var WIDTH;
 var HEIGHT;
 
+var movingMobile;
+
 //Player 1 is true
 var player = true;
 //board[z][row][col]
@@ -19,6 +21,9 @@ window.addEventListener('load', setUp, false);
 window.addEventListener('mousemove', mouseMove, false);
 window.addEventListener('click', mouseClick, false);
 window.addEventListener('touchend', touchEnd, false);
+
+window.addEventListener('touchstart', function(event) { movingMobile = false; }, false);
+window.addEventListener('touchmove', function(event) { movingMobile = true; }, false);
 
 window.addEventListener('resize', function() {
 	WIDTH = window.innerWidth;
@@ -44,6 +49,9 @@ function mouseClick() {
 }
 
 function touchEnd(event) {
+	if (movingMobile)
+		return;
+	
 	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 	
